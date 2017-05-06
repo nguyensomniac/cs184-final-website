@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>David Chen &amp; Lily Nguyen | CS184 Final Project Proposal</title>
+  <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Work+Sans:400,700" rel="stylesheet">
+</head>
+<body>
+  <div class="header-container">
+    <div class="container">
+      <h1 class="header">Final Project:<br />Musical Terrain Generator</h1>
+      <hr />
+      <h3 class="header">David Chen &amp; Lily Nguyen</h3>
+    </div>
+  </div>
+  <div class="body-container">
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Overview</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>We plan to create a audio visualizer using techniques employed in randomized terrain generation. By feeding in the Fourier transforms from music files, we can seed a terrain generator and create an audio-visual experience to dazzle senses.</p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Problem Description</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>Music visualization is a form of media that has yet to be fully explored. Since the creation of applications like Quicktime, music visualizers have existed in one form or another, yet there are still opportunities that have yet to be discovered. Terrain generation, even without adding the additional complexity of music data is already a complex topic. We must decide various factors, such as mesh complexity, texturing, and tuning of hyper-parameters. We plan to split our application into separate modules to accomplish each of these tasks.</p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Goals &amp; Deliverables</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>Our <strong>main goal</strong> is to produce a synchronized view of both the music and the generated terrain in real time.</p>
+        <p>Our <strong>hope</strong> is that plugging our application into a music API such as Prime music would allow for greater choices of music for visualization. Virtual Reality integration would greatly increase the immersiveness of the experience. We have access to a virtual reality device, so it would be feasible to get the visualizer working in VR.</p>
+        <p>Since we want our application to run in real time, <strong>frame-rate</strong> would be an excellent metric to test against. We are aiming for at least 10 fps, which would make for a viewable experience for anyone listening to music and viewing terrain. Qualitatively, we hope for the experience to be aesthetically pleasing, and reminiscent of terrain, but highly stylized.</p>
+        <div class="flex-row image-container">
+          <div class="image-card">
+            <img src="http://twiik.net/sites/default/files/body-attachments/monument-valley-screenshot-4.jpg" alt="">
+            <div class="image-caption">
+              <div class="caption-text">Example of stylized landscape: Monument Valley.</div>
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="http://i.imgur.com/CFsAu8N.png" alt="">
+            <div class="image-caption">
+              <div class="caption-text">Fourier transform of a piece of music over time.</div>
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="http://tim.hibal.org/blog/wp-content/uploads/2012/03/Midpoint-Displacement-Terrain-Wireframe.png" alt="">
+            <div class="image-caption">
+              <div class="caption-text">Using midpoint displacement to create a landscape.</div>
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="http://tim.hibal.org/blog/wp-content/uploads/2012/03/Midpoint-Displacement-Terrain.png" alt="">
+            <div class="image-caption">
+              <div class="caption-text">The rendered mesh.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Schedule</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>We have broken the development plan into 5 major modules, each of which will take a significant amount of time (3-5 days) to accomplish:
+          <ol>
+            <li>Music to Fourier data: Takes in an audio file and converts it to a stream of Fourier data which splits the music files into 20 ms “slices”</li>
+            <li>Mesh generation: The main module, we plan to focus on this part first. Generates continuous terrain meshes using midpoint displacement.</li>
+            <li>Mesh rendering: Our current plan is to use WebGL to render the meshes once our generator produces them.</li>
+            <li>Texturing: We need to figure out how to handle texturing of said mesh once it is generated. An easy solution would be to use solid colors weighted by elevation.</li>
+            <li>Interactive element: This part involves changing camera angles, possible VR integration.</li>
+            <li>Title sequence/ polish: Create an introduction to the experience so people know what they are in for.</li>
+          </ol>
+        </p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Resources</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>
+          <ul>
+            <li><a href="https://www.cs.williams.edu/~morgan/cs371-f16/gallery/4-midterm/terrain/report.md.html">Stylized Terrain Generation</a></li>
+            <li><a href="http://stevelosh.com/blog/2016/02/midpoint-displacement/">Terrain Generation using midpoint displacement</a></li>
+            <li><a href="https://www.khronos.org/webgl/wiki/Main_Page">WebGL docs</a></li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
