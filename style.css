@@ -31,8 +31,8 @@ h2 {
   font-family: 'Roboto Mono';
   font-weight: bold;
   margin: 0;
-  font-size: 24px;
-  color: #5A6363;
+  font-size: 32px;
+  color: #3341D9;
   letter-spacing: 0px;
 }
 h3 {
@@ -90,13 +90,20 @@ p {
   flex-wrap: wrap;
 }
 
+.subheading {
+  margin: auto;
+}
+
 .image-card {
-  flex: 0 0 480px;
-  width: 480px;
+  flex: 1 0 480px;
   background: #FFFFFF;
   box-shadow: 0px 2px 4px 0px rgba(125,125,125,0.41), 0px 2px 19px 4px rgba(111,111,111,0.36);
   margin-right: 16px;
   margin-bottom: 32px;
+}
+
+.image-card video {
+  margin-bottom: -9px;
 }
 
 .image-caption {
@@ -120,6 +127,10 @@ p {
   transform: translateX(-50%);
   position: relative;
   left: 50%;
+}
+
+.image-container:first-child{
+  margin-top: 90px;
 }
 
 .image-container img {

@@ -20,56 +20,120 @@
     <div class="body-row container">
       <div class="body-heading">
         <div class="body-heading-text">
+          <h4>Abstract</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>Over the past month, we built an audio visualizer that would generate terrain based on audio data from music files. Our web application would stream audio and use the Fourier transform at each interval to seed our terrain generator. We took advantage of existing graphics libraries to then render our terrain mesh in real time.</p>
+        <div class="flex-row image-container">
+          <div class="image-card">
+            <video width="100%" poster="http://i.imgur.com/1h2l2JUh.jpg" preload="auto" autoplay="autoplay" muted="muted" loop="loop">
+              <source src="http://i.imgur.com/1h2l2JU.mp4" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-row container">
+      <h2 class="subheading">Technical Approach</h2>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Fourier Analysis</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>The first step is to convert raw audio data into something useful for terrain generation. To this end, we took the <strong>raw amplitude</strong> of the audio, as well as the <strong>Fourier transform</strong> of the audio at each moment. The Fourier transform of audio data breaks down music into distinct frequencies, from lower to higher frequencies. The amplitude feeds into the variance, or “roughness” of our generated terrain. The Fourier transform is converted into z-axis coordinates and added to our generated terrain mesh. Our final app can recognize “cues” in the audio, such as “beats” characterized by maxing of the lower frequencies. We can also recognize peaks at higher frequencies, which usually indicate playing of instruments or synthesizers.</p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Diamond Square Algorithm</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>A common algorithm used for the generation of random terrain in video games is <strong>Diamond-Square</strong>. In this algorithm, the 4 corners of the generated mesh are set to an initial value. In the “square step”, for each square shape in the mesh, a midpoint is created that is set to the average of each of the square’s vertices, offset by some random value. In the “diamond step”, for each diamond shape in the mesh, a midpoint is created that is set to the average of each of the diamond’s vertices, offset by some random value. The square and diamond steps are repeated until the mesh has reached the desired size. We enabled this form of terrain generation as a way to add a fluctuating effect to the audio landscape as it passes by.</p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Fourier to Terrain</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>The Fourier to Terrain component of our app is the most apparent effect we implemented. We take a Fourier transform of the audio at the same fidelity as the length of one side of our mesh. This data is used to determine the z component dimension of the edge farthest away from the camera view. Every other point on the mesh has their z component value shifted down one coordinate closer to the camera view. This is what creates the effect of passing through an audio landscape. Because of the nature of the Fourier Transform, peaks at the lower (left) end of the terrain correspond to low bass beats and percussive instruments, whereas peaks and mountain ranges at higher (right) end of the terrain correspond to tonal instruments and singing voices.</p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <h2 class="subheading">Rendering Effects</h2>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
           <h4>Overview</h4>
         </div>
       </div>
       <div class="body-section">
-        <p>We plan to create a audio visualizer using techniques employed in randomized terrain generation. By feeding in the Fourier transforms from music files, we can seed a terrain generator and create an audio-visual experience to dazzle senses.</p>
+        <p>One of our goals was to run our project in real time. Because of this, it is difficult to present the illusion of vast, sweeping terrain without sacrificing detail. To resolve this we use cameras and fog in a way that makes the plane seem infinite at a performance cost much lower than rendering a more detailed mesh.</p>
       </div>
     </div>
     <div class="body-row container">
       <div class="body-heading">
         <div class="body-heading-text">
-          <h4>Problem Description</h4>
+          <h4>Camera</h4>
         </div>
       </div>
       <div class="body-section">
-        <p>Music visualization is a form of media that has yet to be fully explored. Since the creation of applications like Quicktime, music visualizers have existed in one form or another, yet there are still opportunities that have yet to be discovered. Terrain generation, even without adding the additional complexity of music data is already a complex topic. We must decide various factors, such as mesh complexity, texturing, and tuning of hyper-parameters. We plan to split our application into separate modules to accomplish each of these tasks.</p>
+        <p>The scene uses Three.Js’s built-in <b>perspective camera</b> with a FOV of 46.4 degrees. This is equivalent to a 28mm lens on a 35mm camera. The advantage of using a wider angle lens is that more can fit in the frame, with smaller objects seeming farther away than they actually are.</p>
+        <p>The camera is placed at the edge of the mesh on the negative X axis, pointing towards the opposite edge. This creates the illusion that the viewer is flying as the rows in the terrain mesh shift, even though nothing in the scene is actually moving.</p>
       </div>
     </div>
     <div class="body-row container">
       <div class="body-heading">
         <div class="body-heading-text">
-          <h4>Goals &amp; Deliverables</h4>
+          <h4>Fog</h4>
         </div>
       </div>
       <div class="body-section">
-        <p>Our <strong>main goal</strong> is to produce a synchronized view of both the music and the generated terrain in real time.</p>
-        <p>Our <strong>hope</strong> is that plugging our application into a music API such as Prime music would allow for greater choices of music for visualization. Virtual Reality integration would greatly increase the immersiveness of the experience. We have access to a virtual reality device, so it would be feasible to get the visualizer working in VR.</p>
-        <p>Since we want our application to run in real time, <strong>frame-rate</strong> would be an excellent metric to test against. We are aiming for at least 10 fps, which would make for a viewable experience for anyone listening to music and viewing terrain. Qualitatively, we hope for the experience to be aesthetically pleasing, and reminiscent of terrain, but highly stylized.</p>
+        <p>We use the built-in Three.js linear <b>fog shader</b>, which mixes a mesh’s color values with a constant color once its distance from the camera reaches a certain value. This masks the horizon, creating the illusion of infinite terrain.</p>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>Materials</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>The terrain mesh uses a flat shader, i.e. without any interpolation. This choice was made for both performance and aesthetic purposes, emulating the “low poly” visual style popularized by games like Monument Valley.</p>
+        <p>We use a heightmap to determine the color of each face, interpolating between two colors depending on a face’s z-coordinate. The way we interpolate comes with a twist; instead of interpolating using a color’s RGB values, we use the CIELCH color space to interpolate. RGB interpolation has the disadvantage of creating muddier colors, especially with colors with significantly different hues. CIELCH solves this problem by interpolating hue, saturation, and lightness values while still creating a perceptually uniform gradient. In practice, our terrain looks more vivid and ethereal.</p>
+        <p>The CIELCh color system is similar to the CIELAB color system discussed in class. Both are designed to be perceptually uniform and run a larger gamut than RGB or CMYK.  In contrast, CIELCH uses cylindrical coordinates instead of cartesian coordinates, i.e. the hue angle and chroma distance instead of the red-green and blue-yellow axes.</p>
         <div class="flex-row image-container">
           <div class="image-card">
             <img src="http://twiik.net/sites/default/files/body-attachments/monument-valley-screenshot-4.jpg" alt="">
             <div class="image-caption">
-              <div class="caption-text">Example of stylized landscape: Monument Valley.</div>
+              <div class="caption-text">Complementary colors in Monument Valley.</div>
             </div>
           </div>
           <div class="image-card">
-            <img src="http://i.imgur.com/CFsAu8N.png" alt="">
+            <img src="https://lumiere-a.akamaihd.net/v1/images/Tatooine_36689d1b.jpeg?region=0%2C0%2C1536%2C864&width=768" alt="">
             <div class="image-caption">
-              <div class="caption-text">Fourier transform of a piece of music over time.</div>
+              <div class="caption-text">Visual inspiration from <em>Star Wars</em>.</div>
             </div>
           </div>
           <div class="image-card">
-            <img src="http://tim.hibal.org/blog/wp-content/uploads/2012/03/Midpoint-Displacement-Terrain-Wireframe.png" alt="">
+            <img src="./img/rgb.png" alt="">
             <div class="image-caption">
-              <div class="caption-text">Using midpoint displacement to create a landscape.</div>
+              <div class="caption-text">Heightmap using RGB interpolation.</div>
             </div>
           </div>
           <div class="image-card">
-            <img src="http://tim.hibal.org/blog/wp-content/uploads/2012/03/Midpoint-Displacement-Terrain.png" alt="">
+            <img src="./img/lch.png" alt="">
             <div class="image-caption">
-              <div class="caption-text">The rendered mesh.</div>
+              <div class="caption-text">Heightmap using LCH interpolation.</div>
             </div>
           </div>
         </div>
@@ -78,34 +142,59 @@
     <div class="body-row container">
       <div class="body-heading">
         <div class="body-heading-text">
-          <h4>Schedule</h4>
+          <h4>Results</h4>
         </div>
       </div>
       <div class="body-section">
-        <p>We have broken the development plan into 5 major modules, each of which will take a significant amount of time (3-5 days) to accomplish:
-          <ol>
-            <li>Music to Fourier data: Takes in an audio file and converts it to a stream of Fourier data which splits the music files into 20 ms “slices”</li>
-            <li>Mesh generation: The main module, we plan to focus on this part first. Generates continuous terrain meshes using midpoint displacement.</li>
-            <li>Mesh rendering: Our current plan is to use WebGL to render the meshes once our generator produces them.</li>
-            <li>Texturing: We need to figure out how to handle texturing of said mesh once it is generated. An easy solution would be to use solid colors weighted by elevation.</li>
-            <li>Interactive element: This part involves changing camera angles, possible VR integration.</li>
-            <li>Title sequence/ polish: Create an introduction to the experience so people know what they are in for.</li>
-          </ol>
+        <div class="flex-row image-container">
+          <div class="image-card">
+            <iframe src="https://drive.google.com/file/d/0B2iusu6f78MwU3ZuS0hlUDl6bmc/preview" width="976px" height="600px"></iframe>
+            <div class="image-caption">
+              <div class="caption-text">The final result, using Snoop Dogg's "Drop It Like It's Hot".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-row container">
+      <div class="body-heading">
+        <div class="body-heading-text">
+          <h4>References</h4>
+        </div>
+      </div>
+      <div class="body-section">
+        <p>
+          <ul>
+            <li><a href="http://www.smartjava.org/content/exploring-html5-web-audio-visualizing-sound">Doing a Fourier Analysis on audio</a></li>
+            <li><a href="http://stevelosh.com/blog/2016/06/diamond-square/">Overview of the Diamond Square Algorithm</a></li>
+            <li><a href="http://www.playfuljs.com/realistic-terrain-in-130-lines/">More text on the Diamond Square Algorithm</a></li>
+            <li><a href="https://earthobservatory.nasa.gov/blogs/elegantfigures/2013/08/05/subtleties-of-color-part-1-of-6/">Perceptually linear color spaces</a></li>
+            <li><a href="http://web.mit.edu/cesium/Public/terrain.pdf">MIT paper on the mathematics behind various terrain generation techniques</a></li>
+            <li><a href="https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene">Three.js documentation</a></li>
+          </ul>
         </p>
       </div>
     </div>
     <div class="body-row container">
       <div class="body-heading">
         <div class="body-heading-text">
-          <h4>Resources</h4>
+          <h4>References</h4>
         </div>
       </div>
       <div class="body-section">
         <p>
+          David:
           <ul>
-            <li><a href="https://www.cs.williams.edu/~morgan/cs371-f16/gallery/4-midterm/terrain/report.md.html">Stylized Terrain Generation</a></li>
-            <li><a href="http://stevelosh.com/blog/2016/02/midpoint-displacement/">Terrain Generation using midpoint displacement</a></li>
-            <li><a href="https://www.khronos.org/webgl/wiki/Main_Page">WebGL docs</a></li>
+            <li>Audio to Fourier Component</li>
+            <li>Fourier Analysis Component</li>
+            <li>Fourier to Terrain Mesh Component</li>
+            <li>Diamond-Square Algorithm Component</li>
+          </ul>
+          Lily:
+          <ul>
+            <li>Mesh rendering</li>
+            <li>Materials, lighting</li>
+            <li>Scene design, creative direction</li>
           </ul>
         </p>
       </div>
