@@ -238,3 +238,20 @@ h3.header {
   padding: 16px;
   color: #3B2D51;
 }
+
+.fin {
+  color: #3341D9;
+  margin: auto;
+  opacity: 0.7;
+}
+
+.fin::before,
+.fin::after {
+  content: '';
+  height: 2px;
+  width: 80px;
+  display: inline-block;
+  background-color: #3341D9;
+  vertical-align: middle;
+  margin: 0 12px;
+}
